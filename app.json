@@ -120,7 +120,7 @@
         "REQ_CHANNEL": {
             "description": "To send logs of unavailable contnts",
             "value": "-100xxxxxxx",
-            "required": true
+            "required": false
         },
         "URL_MODE": {
             "description": "True - 'if you want to enable url shortner' else - false ",
@@ -141,7 +141,7 @@
             "description": " Group id whom you want to bypass url ",
             "value": "-1001773435994",
             "required": true
-        },
+        }, 
         "MY_USERS": {
             "description": "Id of the users whom you want to allow to forward message in file protection mode ",
             "value": "5965340120 5448908073 5590491131",
