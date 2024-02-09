@@ -2,6 +2,8 @@ import re
 from os import getenv, environ
 
 id_pattern = re.compile(r'^.\d+$')
+
+# Function to check if a value indicates enabled or disabled
 def is_enabled(value, default):
     if value.lower() in ["true", "yes", "1", "enable", "y"]:
         return True
