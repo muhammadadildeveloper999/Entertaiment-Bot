@@ -86,36 +86,43 @@ MY_USERS = (my_users) if my_users else []
 
 
 # Online Stream and Download
-PORT = int(environ.get('PORT', 8080))
-NO_PORT = bool(environ.get('NO_PORT', False))
-APP_NAME = None
-if 'DYNO' in environ:
-    ON_HEROKU = True
-    APP_NAME = environ.get('APP_NAME')
-else:
-    ON_HEROKU = False
-BIND_ADRESS = str(getenv('WEB_SERVER_BIND_ADDRESS', '0.0.0.0'))
-FQDN = str(getenv('FQDN', BIND_ADRESS)) if not ON_HEROKU or getenv('FQDN') else APP_NAME+'.herokuapp.com'
-URL = "https://{}/".format(FQDN) if ON_HEROKU or NO_PORT else \
-    "http://{}:{}/".format(FQDN, PORT)
+from os import environ
+
+# Retrieve the PORT environment variable or default to 8080
+PORT = int(environ.get('PORT', 8000))
+
+# Check if the application is running on Heroku environment
+ON_HEROKU = 'DYNO' in environ
+
+# Define the bind address
+BIND_ADDRESS = environ.get('WEB_SERVER_BIND_ADDRESS', '0.0.0.0')
+
+# Define the fully qualified domain name (FQDN)
+FQDN = environ.get('FQDN', '{}.herokuapp.com'.format(environ.get('APP_NAME'))) if ON_HEROKU else BIND_ADDRESS
+
+# Define the URL based on whether the app is running on Heroku or locally
+URL = "https://{}/".format(FQDN) if ON_HEROKU else "http://{}:{}/".format(FQDN, PORT)
+
+# Define other configurations
 SLEEP_THRESHOLD = int(environ.get('SLEEP_THRESHOLD', '60'))
 WORKERS = int(environ.get('WORKERS', '4'))
-SESSION_NAME = str(environ.get('SESSION_NAME', 'LazyBot'))
+SESSION_NAME = environ.get('SESSION_NAME', 'LazyBot')
 MULTI_CLIENT = False
-name = str(environ.get('name', 'LazyPrincess'))
+name = environ.get('name', 'LazyPrincess')
 PING_INTERVAL = int(environ.get("PING_INTERVAL", "1200"))  # 20 minutes
-if 'DYNO' in environ:
-    ON_HEROKU = True
-    APP_NAME = str(getenv('APP_NAME'))
 
-else:
-    ON_HEROKU = False
-HAS_SSL=bool(getenv('HAS_SSL',False))
+# Check if SSL is enabled
+HAS_SSL = bool(environ.get('HAS_SSL', False))
+
+# Update URL based on SSL configuration
 if HAS_SSL:
-    URL = "https://{}/".format(FQDN)
+    URL = "https://{}".format(FQDN)
 else:
-    URL = "http://{}/".format(FQDN)
+    URL = "http://{}".format(FQDN)
+
+# Define the repository owner
 REPO_OWNER = "LazyDeveloperr"
+
 
 # Auto Delete For Group Message (Self Delete) #
 SELF_DELETE_SECONDS = int(environ.get('SELF_DELETE_SECONDS', 300))
